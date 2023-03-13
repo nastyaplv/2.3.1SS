@@ -1,6 +1,7 @@
 package web.dao;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import web.models.User;
 
 import javax.persistence.EntityManager;
@@ -8,13 +9,10 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDAOImpl implements UserDAO {
     @PersistenceContext
-    private final EntityManager entityManager;
-
-    public UserDAOImpl(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    private EntityManager entityManager;
 
     @Override
     public void addUser(User user) {
@@ -37,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getAllUser() {
-        return entityManager.createQuery("from User", User.class).getResultList();
+        return entityManager.createQuery("SELECT user from User user").getResultList();
 
     }
 
